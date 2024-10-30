@@ -44,7 +44,7 @@ int main(void)
 
 		// At this point, the bounding indices between the start and end
 		// of a word have been found, and we simply iterate through
-		// those intices an print them.
+		// those indices and print them.
 		for (int j = start; j <= end; j++) {
 			putchar(input_sentence[j]);
 		}

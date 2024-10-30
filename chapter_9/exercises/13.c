@@ -1,6 +1,6 @@
 int evaluate_position(char board[8][8])
 {
-	int i, j, sum_of_white = 0, sum_of_black = 0;
+	int i, j, sum_of_white = 0, sum_of_black = 0, difference;
 
 	for (i = 0; i < 8; i++) {
 		for (j = 0; j < 8; j++) {
@@ -37,5 +37,6 @@ int evaluate_position(char board[8][8])
 		}
 	}
 
-	return 0;
+	difference = sum_of_white - sum_of_black;
+	return difference;
 }

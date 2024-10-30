@@ -5,7 +5,7 @@ int main(void)
 {
 	char ch;
 	char first_initial = '\0';
-	char last_name[21] = {0};
+	char last_name[20] = {0};
 	int state = 0, i = 0;
 
 	printf("Enter a first and last name: ");
@@ -25,7 +25,7 @@ int main(void)
 		}
 	}
 
-	for (int j = 0; j < 20; j++) {
+	for (int j = 0; last_name[j] != '\0'; j++) {
 		putchar(last_name[j]);
 	}
 

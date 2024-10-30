@@ -51,7 +51,7 @@ bool play_game(void)
 	if (roll == 7 || roll == 11) {
 		printf("You win!\n");
 		return true;
-	} else if (roll == 2, roll == 3 || roll == 12) {
+	} else if (roll == 2 || roll == 3 || roll == 12) {
 		printf("You lose!\n");
 		return false;
 	} else {
