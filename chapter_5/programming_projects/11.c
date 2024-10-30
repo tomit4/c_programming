@@ -80,6 +80,9 @@ int main(void)
 	}
 
 	switch (second_digit) {
+	case 0:
+		printf("\n");
+		break;
 	case 1:
 		printf("-one.\n");
 		break;

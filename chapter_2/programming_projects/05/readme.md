@@ -1,4 +1,4 @@
-Write a program that asks the u ser to enter a value for `x` and then displays
+Write a program that asks the user to enter a value for `x` and then displays
 the value of the following polynomial:
 
 ```

@@ -10,19 +10,19 @@ int main(void)
 	if (speed < 1) {
 		printf("The wind force, according to the Beaufort scale is: "
 		       "Calm\n");
-	} else if (speed < 4) {
+	} else if (speed <= 3) {
 		printf("The wind force, according to the Beaufort scale is: "
 		       "Light air\n");
-	} else if (speed < 27) {
+	} else if (speed <= 27) {
 		printf("The wind force, according to the Beaufort scale is: "
 		       "Breeze\n");
-	} else if (speed < 47) {
+	} else if (speed <= 47) {
 		printf("The wind force, according to the Beaufort scale is: "
 		       "Gale\n");
-	} else if (speed < 63) {
+	} else if (speed <= 63) {
 		printf("The wind force, according to the Beaufort scale is: "
 		       "Storm\n");
-	} else if (speed > 63) {
+	} else {
 		printf("The wind force, according to the Beaufort scale is: "
 		       "Hurricane\n");
 	}
