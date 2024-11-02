@@ -1,5 +1,6 @@
-/* LEFT OFF HERE */
-/* Classifies a poker hand */
+/* Answer stolen from:
+ * https://github.com/williamgherman/c-solutions/blob/master/10/projects/03/3.c
+ */
 
 #include <stdbool.h> /* C99 only */
 #include <stdio.h>
@@ -10,13 +11,13 @@
 #define NUM_CARDS 5
 
 /* external variables */
-int num_in_rank[NUM_RANKS];
-int num_in_suit[NUM_SUITS];
+int hand[NUM_CARDS][2];
 bool straight, flush, four, three;
 int pairs; /* can be 0, 1, or 2 */
 
 /* prototypes */
 void read_cards(void);
+bool duplicate_card(int rank, int suit, int hand[NUM_CARDS][2], int cards_read);
 void analyze_hand(void);
 void print_result(void);
 
@@ -38,22 +39,11 @@ int main(void)
  */
 void read_cards(void)
 {
-	bool card_exists[NUM_RANKS][NUM_SUITS];
 	char ch, rank_ch, suit_ch;
 	int rank, suit;
 	bool bad_card;
 	int cards_read = 0;
 
-	for (rank = 0; rank < NUM_RANKS; rank++) {
-		num_in_rank[rank] = 0;
-		for (suit = 0; suit < NUM_SUITS; suit++) {
-			card_exists[rank][suit] = false;
-		}
-	}
-
-	for (suit = 0; suit < NUM_SUITS; suit++) {
-		num_in_suit[suit] = 0;
-	}
 	while (cards_read < NUM_CARDS) {
 		bad_card = false;
 		printf("Enter a card: ");
@@ -140,15 +130,27 @@ void read_cards(void)
 
 		if (bad_card) {
 			printf("Bad card; ignored.\n");
-		} else if (card_exists[rank][suit]) {
+		} else if (duplicate_card(rank, suit, hand, cards_read)) {
 			printf("Duplicate card; ignored.\n");
 		} else {
-			num_in_rank[rank]++;
-			num_in_suit[suit]++;
-			card_exists[rank][suit] = true;
+			hand[cards_read][0] = rank;
+			hand[cards_read][1] = suit;
 			cards_read++;
 		}
 	}
+}
+
+/*
+ * duplicate_card: Determines if given card has already been read into hand
+ */
+bool duplicate_card(int rank, int suit, int hand[NUM_CARDS][2], int cards_read)
+{
+	for (int i = 0; i < cards_read; i++) {
+		if (hand[i][0] == rank && hand[i][1] == suit) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /*
@@ -159,44 +161,69 @@ void read_cards(void)
  */
 void analyze_hand(void)
 {
-	int num_consec = 0;
-	int rank, suit;
+	int card, matches;
 	straight = false;
 	flush = false;
 	four = false;
 	three = false;
 	pairs = 0;
 
+	/* sort the cards with selection sort */
+	int i, j, smallest, temp_suit, temp_rank;
+	for (i = 0; i < NUM_CARDS; i++) {
+		smallest = i;
+
+		for (j = i + 1; j < NUM_CARDS; j++) {
+			if (hand[j][0] < hand[smallest][0]) {
+				smallest = j;
+			}
+		}
+
+		temp_rank = hand[i][0];
+		temp_suit = hand[i][1];
+		hand[i][0] = hand[smallest][0];
+		hand[i][1] = hand[smallest][1];
+		hand[smallest][0] = temp_rank;
+		hand[smallest][1] = temp_suit;
+	}
+
 	/* check for flush */
-	for (suit = 0; suit < NUM_SUITS; suit++) {
-		if (num_in_suit[suit] == NUM_CARDS) {
+	for (card = 1; card < NUM_CARDS; card++) {
+		if (hand[card][1] != hand[0][1]) {
+			break;
+		}
+		if (card == NUM_CARDS - 1) {
 			flush = true;
 		}
 	}
 
 	/* check for straight */
-	rank = 0;
-	while (num_in_rank[rank] == 0) {
-		rank++;
-	}
-	for (; rank < NUM_RANKS && num_in_rank[rank] > 0; rank++) {
-		num_consec++;
-	}
-	if (num_consec == NUM_CARDS) {
-		straight = true;
-		return;
+	for (card = 1; card < NUM_CARDS; card++) {
+		if (hand[card][0] - hand[card - 1][0] != 1) {
+			break;
+		}
+		if (card == NUM_CARDS - 1) {
+			straight = true;
+		}
 	}
 
 	/* check for 4-of-a-kind, 3-of-a-kind, and pairs */
-	for (rank = 0; rank < NUM_RANKS; rank++) {
-		if (num_in_rank[rank] == 4) {
-			four = true;
+	for (i = 0; i < NUM_CARDS; i++) {
+		matches = 0;
+		for (j = i + 1; j < NUM_CARDS; j++) {
+			if (hand[j][0] == hand[i][0]) {
+				matches++;
+			}
 		}
-		if (num_in_rank[rank] == 3) {
+
+		if (matches == 1) {
+			pairs++;
+		}
+		if (matches == 2) {
 			three = true;
 		}
-		if (num_in_rank[rank] == 2) {
-			pairs++;
+		if (matches == 3) {
+			four = true;
 		}
 	}
 }
