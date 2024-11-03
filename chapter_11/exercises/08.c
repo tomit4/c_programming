@@ -1,15 +1,3 @@
-Q: Write the following function:
-
-```c
-int *find_largest(int a[], int n);
-```
-
-When passed an array `a` of length `n`, the function will return a pointer to
-the array's largest element.
-
-A:
-
-```c
 #include <stdio.h>
 
 #define LENGTH 5
@@ -39,4 +27,3 @@ int *find_largest(int a[], int n)
 
 	return largest_elem;
 }
-```

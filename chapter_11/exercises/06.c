@@ -1,16 +1,3 @@
-Q: Write the following function:
-
-```c
-void find_two_largest(int a[], int n, int *largest, int *second_largest);
-```
-
-When passed an array `a` of length `n`, the function will search `a` for its
-largest and second-largest elements, storing them in the variables pointed to by
-`largest`, and `second_largest`, respectively.
-
-A:
-
-```c
 #include <stdio.h>
 
 #define LENGTH 5
@@ -47,4 +34,3 @@ void find_two_largest(int a[], int n, int *largest, int *second_largest)
 		}
 	}
 }
-```

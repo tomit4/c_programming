@@ -1,17 +1,3 @@
-Q: Write the following function:
-
-```c
-void split_time(long total_sec, int *hr, int *min, int *sec);
-```
-
-`total_sec` is a time represented as the number of seconds since midnight, `hr`,
-`min`, and `sec` are pointers to variables in which the function will store the
-equivallent time in hours (0-23), minutes (0-59), and seconds (0-59),
-respectively.
-
-A:
-
-```c
 #include <stdio.h>
 
 void split_time(long total_sec, int *hr, int *min, int *sec);
@@ -43,4 +29,3 @@ void split_time(long total_sec, int *hr, int *min, int *sec)
 	sec_remaining = sec_remaining - sec_taken_up;
 	*sec = sec_remaining;
 }
-```
