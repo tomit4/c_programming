@@ -1,13 +1,20 @@
-Q: Modify the `find_middle` function of Section 11.5 so that it uses pointer
-arithmetic to calculate the return value.
+#include <stdio.h>
 
-```c
-int *find_middle(int a[], int n) { return &a[n/2]; }
-```
+#define N 5
 
-A:
+int array[N] = {7, 9, 4, 3, 2};
 
-```c
+int *find_middle(int a[], int n);
+
+int main(void)
+{
+	int *mid = find_middle(array, N);
+
+	printf("*mid :=> %d\n", *mid);
+
+	return 0;
+}
+
 /* NOTE: This works becase variable `a` is a pointer (to the first element of
  * the array). Since array elements are stored in contiguous memory, by
  * incrementing the memory address by the amount `n`, we would find the last
@@ -16,4 +23,3 @@ A:
  * memory address of the array `a`.
  * */
 int *find_middle(int a[], int n) { return a + n / 2; }
-```

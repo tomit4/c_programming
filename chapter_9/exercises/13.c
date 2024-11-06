@@ -19,7 +19,7 @@ int evaluate_position(char board[8][8])
 				sum_of_white += 1;
 				break;
 			case 'q':
-				sum_of_black += 1;
+				sum_of_black += 9;
 				break;
 			case 'r':
 				sum_of_black += 5;
