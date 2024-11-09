@@ -1,28 +1,32 @@
-#include <ctype.h>
 #include <stdio.h>
+
+#define MAX_LEN 1000
+
+void reverse_name(char *name);
 
 int main(void)
 {
-	char ch;
-	char first_initial = '\0';
-	int state = 0;
+	char name_string[MAX_LEN];
 
 	printf("Enter a first and last name: ");
+	char c, *p = name_string;
+	while ((c = getchar()) != '\n' && p < name_string + 80)
+		*p++ = c;
+	*p = '\0';
 
-	while ((ch = getchar()) != '\n') {
-		if (ch != ' ') {
-			if (state == 0 && ch == toupper(ch)) {
-				first_initial = ch;
-			}
-			if (state == 1) {
-				printf("%c", ch);
-			}
-		} else if (first_initial != '\0') {
-			state = 1;
-		}
-	}
-
-	printf(", %c.\n", first_initial);
-
+	reverse_name(name_string);
 	return 0;
+}
+
+void reverse_name(char *name)
+{
+	char initial = name[0];
+	while (*name) {
+		if (*name == ' ') {
+			name++;
+			printf("%s, %c.\n", name, initial);
+			break;
+		}
+		name++;
+	}
 }

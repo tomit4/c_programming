@@ -12,27 +12,26 @@ int main(void)
 {
 	bool in_hand[NUM_SUITS][NUM_RANKS] = {false};
 	int num_cards, rank, suit;
-	const char rank_code[] = {
-	    '2', '3', '4', '5', '6', '7', '8', '9', 't', 'j', 'q', 'k', 'a',
-	};
-	const char suite_code[] = {'c', 'd', 'h', 's'};
+	const char *ranks[] = {"Two",	"Three", "Four", "Five", "Six",
+			       "Seven", "Eight", "Nine", "Ten",	 "Jack",
+			       "Queen", "King",	 "Ace"};
+	const char *suits[] = {"Clubs", "Diamonds", "Hearts", "Spades"};
 
 	srand((unsigned)time(NULL));
 
 	printf("Enter number of cards in hand: ");
 	scanf("%d", &num_cards);
 
-	printf("Your hand:");
+	printf("Your hand:\n");
 	while (num_cards > 0) {
 		suit = rand() % NUM_SUITS;
 		rank = rand() % NUM_RANKS;
 		if (!in_hand[suit][rank]) {
 			in_hand[suit][rank] = true;
 			num_cards--;
-			printf(" %c%c", rank_code[rank], suite_code[suit]);
+			printf("%s of %s\n", ranks[rank], suits[suit]);
 		}
 	}
-	printf("\n");
 
 	return 0;
 }
