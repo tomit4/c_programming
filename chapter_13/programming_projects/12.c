@@ -1,62 +1,35 @@
-// ChatGPT finish
 #include <stdio.h>
 
-// Sliding window solution
+#define MAX_LEN 20
+#define MAX_WORDS 30
+
 int main(void)
 {
-	char ch, term_ch;
-	char input_sentence[1001] = {'\0'};
-	int index = 0;
+	int i = 0, j = 0;
+	char c;
+	char terminating_char = 0;
+	char sentence[MAX_WORDS][MAX_LEN];
 
 	printf("Enter a sentence: ");
-
-	while ((ch = getchar()) != '\n') {
-		if (ch == '?' || ch == '.' || ch == '!') {
-			term_ch = ch;
-			break;
-		} else if (index < 1001) {
-			input_sentence[index] = ch;
+	while ((c = getchar()) != '\n' && i < MAX_WORDS) {
+		if (c == ' ' || c == '\t') {
+			sentence[i][j] = '\0';
+			i++;
+			j = 0;
+			continue;
 		}
-		index++;
+		if (c == '.' || c == '!' || c == '?') {
+			terminating_char = c;
+			sentence[i][j] = '\0';
+			break;
+		} else if (j < MAX_LEN)
+			sentence[i][j++] = c;
 	}
 
-	printf("Reversal of sentence:");
-	int end = index - 1;
-
-	while (end >= 0) {
-		// Find the end character of current word
-		while (end >= 0 && input_sentence[end] == ' ') {
-			end--;
-		}
-		// No more words
-		if (end < 0) {
-			break;
-		}
-
-		// Find start of current word
-		int start = end;
-		// As long as there are still words
-		// AND the character is not a space, count the start variable
-		// backwards
-		while (start >= 0 && input_sentence[start] != ' ') {
-			start--;
-		}
-
-		// At this point, the bounding indices between the start and end
-		// of a word have been found, and we simply iterate through
-		// those indices and print them.
-		for (int j = start; j <= end; j++) {
-			putchar(input_sentence[j]);
-		}
-
-		// And then reindex the end to the index of the start - 1(
-		// skipping the space prior to the first character of current
-		// word)
-		end = start - 1;
-	}
-
-	putchar(term_ch);
-	printf("\n");
+	printf("Reversal of sentence: ");
+	while (i > 0)
+		printf("%s ", sentence[i--]);
+	printf("%s%c\n", sentence[i], terminating_char);
 
 	return 0;
 }

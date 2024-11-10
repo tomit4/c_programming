@@ -1,13 +1,17 @@
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 #define MAX_LEN 100
+
+bool is_palindrome(const char *message);
 
 int main(void)
 {
 
 	char message[MAX_LEN];
-	char ch, *p = message, *q;
+	char ch, *p = message;
+	bool message_is_palindrome;
 
 	printf("Enter a message: ");
 
@@ -17,14 +21,27 @@ int main(void)
 		}
 	}
 
-	p--;	     // p now points to the last character in the array.
-	q = message; // and q now points to the first character in the array.
-	for (; q < p; q++, p--) {
-		if (*p != *q) {
-			printf("Not a palindrome\n");
-			return 0;
-		}
-	}
-	printf("Palindrome\n");
+	message_is_palindrome = is_palindrome(message);
+
+	if (message_is_palindrome)
+		printf("Palindrome\n");
+	else
+		printf("Not a palindrome\n");
+
 	return 0;
+}
+
+bool is_palindrome(const char *message)
+{
+	const char *p = message, *q = message;
+	// point p to the last non-null character in the message string
+	while (*(p + 1))
+		p++;
+	while (q < p) {
+		if (*q != *p)
+			return false;
+		q++;
+		p--;
+	}
+	return true;
 }

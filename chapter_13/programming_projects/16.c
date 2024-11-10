@@ -2,23 +2,40 @@
 
 #define MAX_LEN 100
 
+void reverse(char *message);
+
 int main(void)
 {
 	char message[MAX_LEN];
-	char ch, *p = message;
+	char c, *p = message;
 
+	// p1 points to end of message
 	printf("Enter a message: ");
-
-	while ((ch = getchar()) != '\n' && p < message + MAX_LEN) {
-		*p++ = ch;
+	while ((c = getchar()) != '\n' && p < message + MAX_LEN) {
+		*p++ = c;
 	}
-	p--;
-	printf("Reversal is: ");
+	*p = '\0';
 
-	while (p >= message) {
-		putchar(*p--);
-	}
-	printf("\n");
+	reverse(message);
+
+	printf("Reversal is: %s\n", message);
 
 	return 0;
+}
+
+void reverse(char *message)
+{
+	char *p = message, *q = message, temp;
+
+	while (*q)
+		q++;
+	q--;
+
+	while (p < q) {
+		temp = *p;
+		*p = *q;
+		*q = temp;
+		p++;
+		q--;
+	}
 }

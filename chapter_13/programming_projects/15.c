@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #define STACK_SIZE 100
+#define MAX_LEN 100
 
 char contents[STACK_SIZE] = {0};
 int top = 0;
@@ -19,56 +20,64 @@ void push(char i);
 char pop(void);
 void stack_overflow(void);
 void stack_underflow(void);
+int evaluate_RPN_expression(const char *expression);
 
 int main(void)
 {
-	char c, op1, op2;
-	int num = 0;
-	bool building_number = false;
+	char expression[MAX_LEN];
 
 	while (true) {
 		printf("Enter an RPN expression: ");
+		char c, *p = expression;
+		while ((c = getchar()) != '\n')
+			*p++ = c;
+		printf("Value of expression: %d\n",
+		       evaluate_RPN_expression(expression));
+		p = expression;
+		while (*p)
+			*p = '\0';
+	}
+	exit(EXIT_SUCCESS);
+}
 
-		while ((c = getchar()) != '\n') {
-			if (isdigit(c)) {
-				num = num * 10 + (c - '0');
-				building_number = true;
-			} else {
-				if (building_number) {
-					push(num);
-					num = 0;
-					building_number = false;
-				}
-				switch (c) {
-				case '+':
-					push(pop() + pop());
-					break;
-				case '-':
-					op2 = pop();
-					op1 = pop();
-					push(op1 - op2);
-					break;
-				case '*':
-					push(pop() * pop());
-					break;
-				case '/':
-					op2 = pop();
-					op1 = pop();
-					push(op1 / op2);
-					break;
-				case '=':
-					printf("Value of expression: %d\n",
-					       pop());
-					top = 0;
-					break;
-				case ' ':
-					break;
-				default:
-					exit(EXIT_SUCCESS);
-				}
+int evaluate_RPN_expression(const char *expression)
+{
+	char op1, op2;
+
+	while (*expression) {
+		if (isdigit(*expression)) {
+			push(*expression - '0');
+		} else {
+			switch (*expression) {
+			case '+':
+				push(pop() + pop());
+				break;
+			case '-':
+				op2 = pop();
+				op1 = pop();
+				push(op1 - op2);
+				break;
+			case '*':
+				push(pop() * pop());
+				break;
+			case '/':
+				op2 = pop();
+				op1 = pop();
+				push(op1 / op2);
+				break;
+			case '=':
+				return pop();
+				break;
+			case ' ':
+				break;
+			default:
+				exit(EXIT_FAILURE);
 			}
 		}
+		expression++;
 	}
+
+	exit(EXIT_FAILURE);
 }
 
 bool is_empty(void) { return top == 0; }
