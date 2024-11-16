@@ -40,12 +40,15 @@ int main(void)
 				case '=':
 					printf("Value of expression: %d\n",
 					       pop());
-					top = 0;
+					make_list_empty();
 					break;
 				case ' ':
 					break;
 				default:
-					exit(EXIT_SUCCESS);
+					printf("Invalid character '%c' in "
+					       "expression. Exiting...\n",
+					       c);
+					exit(EXIT_FAILURE);
 				}
 			}
 		}

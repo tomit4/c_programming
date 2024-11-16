@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror -std=c99
-FILE=../../../bin/chapter_15/programming_projects/05/main
+FILE=../../../bin/chapter_17/exercises/08/main
 
 main: main.o stack.o
 	$(CC) -o $(FILE) main.o stack.o $(CFLAGS)

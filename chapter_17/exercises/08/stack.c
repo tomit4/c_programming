@@ -1,29 +1,64 @@
+// NOTE: This section taught me a lot about dangling pointers, and some aspects
+// of memory safety (see instances of NULL assignment, NULL checks, malloc, and
+// free calls)
 #include "stack.h"
 
-char contents[STACK_SIZE] = {0};
-int top = 0;
+struct node *list;
 
-bool is_empty(void) { return top == 0; }
+void make_list_empty(void)
+{
+	struct node *temp;
 
-bool is_full(void) { return top == STACK_SIZE; }
+	while (list != NULL) {
+		temp = list;
+		list = list->next;
+		free(temp);
+		temp = NULL;
+	}
+	list = NULL;
+}
+
+bool is_empty(void) { return list == NULL; }
+
+bool is_full(void)
+{
+	struct node *current = list;
+	int count = 0;
+	while (current != NULL) {
+		count++;
+		if (count > STACK_SIZE)
+			return false;
+		current = current->next;
+	}
+	return (count == STACK_SIZE);
+}
 
 void push(char i)
 {
-	if (is_full()) {
-		stack_overflow();
-	} else {
-		contents[top++] = i;
+	struct node *new_node = malloc(sizeof(struct node));
+	if (new_node == NULL) {
+		fprintf(stderr, "Not enough memory was allocated\n");
+		exit(EXIT_FAILURE);
 	}
+	new_node->value = i;
+	new_node->next = list;
+	list = new_node;
 }
 
-char pop(void)
+int pop(void)
 {
+	int value;
+	struct node *popped = list;
+
 	if (is_empty()) {
 		stack_underflow();
-		return 0;
-	} else {
-		return contents[--top];
 	}
+	list = list->next;
+	popped->next = NULL;
+	value = popped->value;
+	free(popped);
+	popped = NULL;
+	return value;
 }
 
 void stack_overflow(void)
