@@ -22,6 +22,7 @@ struct command {
     {"exit", exit_cmd},
 };
 
+int size_of_file_cmd = sizeof(file_cmd) / sizeof(file_cmd[0]);
 struct command *create_cmd_ptr(void);
 void call_func(char *, struct command *cmd_ptr);
 
@@ -47,7 +48,6 @@ int main(void)
 void call_func(char *str, struct command *cmd_ptr)
 {
 	cmd_ptr = file_cmd;
-	int size_of_file_cmd = sizeof(file_cmd) / sizeof(file_cmd[0]);
 	for (; cmd_ptr < file_cmd + size_of_file_cmd; cmd_ptr++) {
 		if (str == cmd_ptr->cmd_name) {
 			cmd_ptr->cmd_pointer();
