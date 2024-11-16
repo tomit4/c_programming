@@ -36,8 +36,13 @@ int main(void)
 	node_3->value = 1;
 	node_3->next = NULL;
 
+	printf("original ");
 	print_list(list);
 	list = insert_ordered_list(list, node_3);
+	printf("after insert ");
+	print_list(list);
+	delete_from_list(&list, 5);
+	printf("after delete ");
 	print_list(list);
 
 	free_list(list);
@@ -52,7 +57,7 @@ void print_list(struct node *list)
 		printf("%d -->  ", list->value);
 		list = list->next;
 	}
-	printf("\n");
+	printf("null\n");
 }
 
 struct node *insert_ordered_list(struct node *list, struct node *new_node)
