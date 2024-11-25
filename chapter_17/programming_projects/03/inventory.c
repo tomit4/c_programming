@@ -20,6 +20,7 @@ void insert(void);
 void search(void);
 void update(void);
 void print(void);
+void erase(void);
 
 int main(void)
 {
@@ -41,6 +42,9 @@ int main(void)
 			break;
 		case 'p':
 			print();
+			break;
+		case 'e':
+			erase();
 			break;
 		case 'q':
 			return 0;
@@ -142,3 +146,53 @@ void print(void)
 		printf("%7d            %-25s%11d\n", p->number, p->name,
 		       p->on_hand);
 }
+
+void erase(void)
+{
+	int number;
+	struct part **p = &inventory;
+	struct part *prev = NULL;
+	struct part *temp = *p;
+
+	printf("Enter part number: ");
+	scanf("%d", &number);
+
+	if (temp != NULL && temp->number == number) {
+		*p = (*p)->next;
+		free(temp);
+		return;
+	}
+
+	for (; temp != NULL && number > temp->number;
+	     prev = temp, temp = temp->next)
+		;
+	if (temp != NULL && number == temp->number) {
+		prev->next = temp->next;
+		free(temp);
+		return;
+	}
+	printf("Part number %d not found in database\n", number);
+}
+
+/* NOTE: Stolen, better version
+void erase(void)
+{
+    struct part **pp = &inventory;
+    struct part *temp;
+    int n;
+    printf("Enter part number: ");
+    scanf("%d", &n);
+
+    while(*pp) {
+	if ((*pp)->number == n) {
+	    temp = *pp;
+	    *pp = (*pp)->next;
+	    free(temp);
+	    return;
+	}
+	pp = &(*pp)->next;
+    }
+    printf("Part number %d not found in database\n", n);
+    return;
+}
+ */

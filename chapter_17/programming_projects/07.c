@@ -7,11 +7,16 @@
 #define MAX_REMIND 50 /* maximum number of reminders */
 #define MSG_LEN 60    /* max length of reminder message */
 
+struct vstring {
+	int len;
+	char chars[];
+};
+
 int read_line(char str[], int n);
 
 int main(void)
 {
-	char *reminders[MAX_REMIND];
+	struct vstring *reminders[MAX_REMIND];
 	char day_str[3], msg_str[MSG_LEN + 2];
 	int day, i, j, num_remind = 0;
 
@@ -30,7 +35,7 @@ int main(void)
 		read_line(msg_str, MSG_LEN);
 
 		for (i = 0; i < num_remind; i++) {
-			if (strcmp(day_str, reminders[i]) < 0) {
+			if (strcmp(day_str, reminders[i]->chars) < 0) {
 				break;
 			}
 		}
@@ -38,21 +43,23 @@ int main(void)
 			reminders[j] = reminders[j - 1];
 		}
 
-		reminders[i] = malloc(2 + strlen(msg_str) + 1);
+		reminders[i] =
+		    malloc(sizeof(struct vstring) + 2 + strlen(msg_str) + 1);
 		if (reminders[i] == NULL) {
 			printf("-- No space left --\n");
 			break;
 		}
 
-		strcpy(reminders[i], day_str);
-		strcat(reminders[i], msg_str);
+		strcpy(reminders[i]->chars, day_str);
+		strcat(reminders[i]->chars, msg_str);
+		reminders[i]->len = strlen(reminders[i]->chars);
 
 		num_remind++;
 	}
 
 	printf("\nDay Reminder\n");
 	for (i = 0; i < num_remind; i++) {
-		printf(" %s\n", reminders[i]);
+		printf(" %s\n", reminders[i]->chars);
 	}
 	return 0;
 }

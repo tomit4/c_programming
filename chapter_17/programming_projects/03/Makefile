@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror -Wpedantic -std=c99
-FILE=../../bin/chapter_17/inventory2/inventory2
+FILE=../../../bin/chapter_17/03/inventory2
 
 inventory: inventory.o readline.o
 	$(CC) -o  $(FILE) inventory.o readline.o $(CFLAGS)

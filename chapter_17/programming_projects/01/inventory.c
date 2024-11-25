@@ -1,5 +1,6 @@
 #include "readline.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #define NAME_LEN 25
 #define MAX_PARTS 100
@@ -8,19 +9,22 @@ struct part {
 	int number;
 	char name[NAME_LEN + 1];
 	int on_hand;
-} inventory[MAX_PARTS];
+} *inventory;
 
 int num_parts = 0;
+int capacity = 3;
 
 int find_part(int number);
 void insert(void);
 void search(void);
 void update(void);
 void print(void);
+struct part *initialize_inventory(void);
 
 int main(void)
 {
 	char code;
+	inventory = initialize_inventory();
 	for (;;) {
 		printf("Enter operation code: ");
 		scanf(" %c", &code);
@@ -40,12 +44,23 @@ int main(void)
 			print();
 			break;
 		case 'q':
-			return 0;
+			exit(EXIT_SUCCESS);
 		default:
 			printf("Illegal code\n");
 		}
 		printf("\n");
 	}
+}
+
+struct part *initialize_inventory(void)
+{
+	struct part *inventory = malloc(capacity * sizeof(struct part));
+	if (inventory == NULL) {
+		fprintf(stderr,
+			"Unable to initialize inventory, memory full!\n");
+		exit(EXIT_FAILURE);
+	}
+	return inventory;
 }
 
 int find_part(int number)
@@ -63,9 +78,15 @@ void insert(void)
 {
 	int part_number;
 
-	if (num_parts == MAX_PARTS) {
-		printf("Database is full; can't add more parts.\n");
-		return;
+	if (num_parts == capacity) {
+		if ((inventory = realloc(inventory, sizeof(struct part) *
+							(capacity *= 2))) ==
+		    NULL) {
+			fprintf(stderr,
+				"Failed to expand inventory, memory full!\n");
+			/* free(inventory); */
+			exit(EXIT_FAILURE);
+		}
 	}
 
 	printf("Enter part number: ");

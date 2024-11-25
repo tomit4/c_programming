@@ -1,5 +1,6 @@
 #include "readline.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #define NAME_LEN 25
 #define MAX_PARTS 100
@@ -113,9 +114,17 @@ void update(void)
 		printf("Part not found.\n");
 }
 
+int compare_by_part_number(const void *a, const void *b)
+{
+	return ((struct part *)a)->number - ((struct part *)b)->number;
+}
+
 void print(void)
 {
 	int i;
+
+	qsort(inventory, num_parts, sizeof(struct part),
+	      compare_by_part_number);
 
 	printf("Part Number    Part Name                 "
 	       "Quantity on Hand\n");
