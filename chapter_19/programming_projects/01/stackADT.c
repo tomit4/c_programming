@@ -4,12 +4,6 @@
 
 #define STACK_SIZE 100
 
-struct stack_type {
-	Item *contents;
-	int top;
-	int size;
-};
-
 static void terminate(const char *message)
 {
 	printf("%s\n", message);
@@ -24,13 +18,19 @@ Stack create(void)
 	}
 	s->contents = malloc(STACK_SIZE * sizeof(Item));
 	if (s->contents == NULL) {
+		free(s);
 		terminate("Error in create: stack could not be created.");
 	}
 	s->top = 0;
+	s->size = STACK_SIZE;
 	return s;
 }
 
-void destroy(Stack s) { free(s); }
+void destroy(Stack s)
+{
+	free(s->contents);
+	free(s);
+}
 
 void make_empty(Stack s) { s->top = 0; }
 
@@ -52,4 +52,12 @@ Item pop(Stack s)
 		terminate("Error in pop: stack is empty.");
 	}
 	return s->contents[--s->top];
+}
+
+Item peek(Stack s)
+{
+	if (is_empty(s)) {
+		terminate("Error in pop: stack is empty.");
+	}
+	return s->contents[s->top - 1];
 }
