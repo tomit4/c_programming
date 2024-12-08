@@ -1,0 +1,1 @@
+This is just the text of file # 01. It should be concantenated with the following with no breaks:

@@ -1,0 +1,5 @@
+This is just a test text file for use with these various counting programs written in C.
+
+One counts the characters.
+One counts the words.
+One counts the lines.

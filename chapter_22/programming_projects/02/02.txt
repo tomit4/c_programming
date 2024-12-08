@@ -1,0 +1,1 @@
+This is just a test file. Testing test tester tada and so forth. Once you are done putting this file through your program, every character in this file should be printed to standard output in upper case. OK!!??
