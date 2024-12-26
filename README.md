@@ -7,8 +7,5 @@ along of
 **ANSWERS:**
 
 You can find answers to all the exercises and problems
-[here](https://github.com/williamgherman/c-solutions).
-
-**LEFTOFF**:
-
-Chapter 22, Programming Project 08
+[here](https://github.com/williamgherman/c-solutions), and also
+[here](http://knking.com/books/c2/answers/index.html).
